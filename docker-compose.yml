@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: spendwise
+      POSTGRES_USER: spendwise_user
+      POSTGRES_PASSWORD: localpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spendwise_user -d spendwise"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/spendwise?options=-c%20TimeZone=Asia%2FKolkata
+      SPRING_DATASOURCE_USERNAME: spendwise_user
+      SPRING_DATASOURCE_PASSWORD: localpass
+      SPRING_JPA_DDL_AUTO: update
+      CORS_ALLOWED_ORIGIN: http://localhost:3000
+      JWT_SECRET: SpendWiseSecretKeyForJWTAuthentication2026Secure
+      JWT_EXPIRATION_MS: 86400000
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        REACT_APP_API_BASE_URL: /api
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+
+

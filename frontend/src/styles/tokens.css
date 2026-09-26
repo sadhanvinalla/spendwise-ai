@@ -1,0 +1,53 @@
+:root {
+  /* Brand */
+  --navy-950: #0b1220;
+  --navy-900: #101935;
+  --navy-800: #182449;
+  --teal-700: #0e5c57;
+  --teal-500: #12a594;
+  --teal-100: #e3f5f2;
+  --gold-500: #c79a3d;
+  --gold-100: #f7efdc;
+  --coral-500: #e1594b;
+  --coral-100: #fbeae8;
+
+  /* Neutrals */
+  --surface: #ffffff;
+  --bg: #f6f7fb;
+  --border: #e4e7ef;
+  --text-primary: #131b2e;
+  --text-secondary: #62697c;
+  --text-inverse: #f5f7fa;
+  --text-inverse-muted: #b7c0d6;
+
+  /* Radius & shadow */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 1px 2px rgba(16, 25, 53, 0.06);
+  --shadow-md: 0 12px 28px rgba(16, 25, 53, 0.10);
+
+  /* Type */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --gradient-brand: linear-gradient(160deg, var(--navy-900) 0%, var(--teal-700) 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-feature-settings: 'tnum' 1;
+}
+
+.amount {
+  font-variant-numeric: tabular-nums;
+}

@@ -1,10 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        BACKEND_IMAGE = 'spendwise-ai-backend'
-        FRONTEND_IMAGE = 'spendwise-ai-frontend'
-    }
+   environment {
+    BACKEND_IMAGE = 'spendwise-ai-backend'
+    FRONTEND_IMAGE = 'spendwise-ai-frontend'
+    REGISTRY = 'host.docker.internal:5000'
+}
 
     stages {
 
@@ -65,6 +66,14 @@ pipeline {
                 sh 'docker image inspect ${FRONTEND_IMAGE}:latest'
             }
         }
+        stage('Push Images to Registry') {
+    steps {
+        sh 'docker tag ${BACKEND_IMAGE}:latest ${REGISTRY}/${BACKEND_IMAGE}:latest'
+        sh 'docker tag ${FRONTEND_IMAGE}:latest ${REGISTRY}/${FRONTEND_IMAGE}:latest'
+        sh 'docker push ${REGISTRY}/${BACKEND_IMAGE}:latest'
+        sh 'docker push ${REGISTRY}/${FRONTEND_IMAGE}:latest'
+    }
+}
         stage('Deploy to Kubernetes') {
     steps {
         sh 'kubectl apply -f k8s/namespace.yaml'

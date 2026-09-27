@@ -65,6 +65,18 @@ pipeline {
                 sh 'docker image inspect ${FRONTEND_IMAGE}:latest'
             }
         }
+        stage('Deploy to Kubernetes') {
+    steps {
+        sh 'kubectl apply -f k8s/namespace.yaml'
+        sh 'kubectl apply -f k8s/config.yaml'
+        sh 'kubectl apply -f k8s/postgres.yaml'
+        sh 'kubectl apply -f k8s/backend.yaml'
+        sh 'kubectl apply -f k8s/frontend.yaml'
+        sh 'kubectl rollout status deployment/postgres -n spendwise --timeout=120s'
+        sh 'kubectl rollout status deployment/backend -n spendwise --timeout=120s'
+        sh 'kubectl rollout status deployment/frontend -n spendwise --timeout=120s'
+    }
+}
     }
 
     post {

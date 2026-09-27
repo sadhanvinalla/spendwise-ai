@@ -91,6 +91,12 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<dependency>
+    <groupId>io.karatelabs</groupId>
+    <artifactId>karate-junit5</artifactId>
+    <version>1.5.1</version>
+    <scope>test</scope>
+</dependency>
 	</dependencies>
 
 	<build>

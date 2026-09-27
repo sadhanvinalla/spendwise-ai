@@ -1,0 +1,27 @@
+services:
+  postgres-test:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: spendwise_test
+      POSTGRES_USER: spendwise_user
+      POSTGRES_PASSWORD: testpass
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spendwise_user -d spendwise_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend-test:
+    image: spendwise-ai-backend:latest
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-test:5432/spendwise_test?options=-c%20TimeZone=Asia%2FKolkata
+      SPRING_DATASOURCE_USERNAME: spendwise_user
+      SPRING_DATASOURCE_PASSWORD: testpass
+      SPRING_JPA_DDL_AUTO: update
+      JWT_SECRET: SpendWiseSecretKeyForJWTAuthentication2026Secure
+      JWT_EXPIRATION_MS: 86400000
+    ports:
+      - "18080:8080"

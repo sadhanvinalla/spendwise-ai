@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: spendwise-backend:latest
+          image: host.docker.internal:5000/spendwise-ai-backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
